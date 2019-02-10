@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="head">
+        <!--head-->
+    </ui:define>
+
+    <ui:define name="content">
+         <p:link outcome="create" rendered="#{session.getAttribute('permission.add') eq true}" style="text-decoration: none" class="fa fa-plus"/>
+        <p:separator/>
+        <h:form>
+            <div class="ui-g" >
+                <f:event type="preRenderComponent" listener="#{securityPermissionMB.prepareItems()}"/>      
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <!--<h1></h1>-->
+                        <p:dataTable var="item" value="#{securityPermissionMB.items}"  reflow="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,20,40,100"
+                                     resizableColumns="true">
+                            
+                            <p:column  headerText="name" filterBy="#{item.name}" sortBy="#{item.name}" style="text-align: center">
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>                
+
+
+                            <p:column rendered="#{session.getAttribute('permission.update') eq true}" style="width: 30px">
+                                <p:button   title="update" icon="fa fa-edit"  outcome="update">
+                                    <f:param name="id" value="#{item.id}"/>
+                                </p:button>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

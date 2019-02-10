@@ -1,0 +1,67 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui">
+    <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+    <p:focus context="panel"/>
+    <p:panelGrid id="panel" columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" 
+                 layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                 style="border:0px none; background-color:transparent" >
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputTextarea required="true" rows="1" id="pro_name" value="#{csProjectMB.item.profullName}" style="width: 100%"/>
+            <label>Full Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText required="true" id="pro_short_name" value="#{csProjectMB.item.proshortName}" style="width: 100%"/>
+            <label>Short Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText required="true" id="pro_country" value="#{csProjectMB.item.proCountry}" style="width: 100%"/>
+            <label>Country Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText required="true" id="pro_city" value="#{csProjectMB.item.proCity}" style="width: 100%"/>
+            <label>City Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText required="true" id="pro_office" value="#{csProjectMB.item.proAddress1}" style="width: 100%"/>
+            <label>Office Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText required="true" id="pro_street" value="#{csProjectMB.item.proAddress2}" style="width: 100%"/>
+            <label>Street Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText required="true" id="pro_symbol" value="#{csProjectMB.item.proX}" style="width: 100%"/>
+            <label>Project Symbol</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText value="#{csProjectMB.projectno.PNoNO}" style="width: 100%"/>
+            <label>Project No</label>
+            <p:commandButton value="Add" actionListener="#{csProjectMB.addProNo()}" update="thisID"/>
+        </h:panelGroup>
+        <p:dataTable id="thisID" 
+                     editable="true" var="item"
+                     value="#{csProjectMB.projectnos}">
+            <p:ajax event="rowEdit" listener="#{csProjectMB.onRowEdit}" update="thisID" />
+            <p:ajax event="rowEditCancel" listener="#{csProjectMB.onRowCancel}" update="thisID" />
+            <p:column headerText="No" >
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <p:outputLabel value="#{item.PNoNO}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText value="#{item.PNoNO}" style="width: 10%"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column style="width:10%">
+                <p:rowEditor />
+            </p:column>
+            <p:column style="width:28px">
+                <p:commandButton icon="ui-icon-delete" actionListener="#{csProjectMB.deleteProNo(item.PNoid)}" update="thisID"/>
+            </p:column>
+        </p:dataTable>
+    </p:panelGrid>
+</ui:component>

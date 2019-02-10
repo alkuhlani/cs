@@ -1,0 +1,95 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              >
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-selectoneradio.ui-grid-responsive .ui-grid-col-4,
+            .ui-selectmanycheckbox.ui-grid-responsive .ui-grid-col-4{
+                padding-bottom: 10px;
+            }
+            .ui-grid-col-4{
+                text-align: right
+            }
+            .ui-grid-col-6{
+                text-align: right
+            }
+            .ui-grid-col-2{
+                text-align: left
+            }
+
+        </style>
+    </ui:define>
+
+    <div class="ui-g " >
+        <div class="ui-g-12">
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4" >
+                                    <p:outputLabel for="contractNo" value="Contract No"/>
+                                    <p:inputText id="contractNo" value="#{csContractMB.csTor.tortempProID}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" >
+                                    <p:outputLabel for="proID" value="Project Name"/>
+                                    <p:selectOneMenu id="proID" value="#{csContractMB.csTor.torproID.proID}">
+                                        <p:ajax event="change" listener="#{csContractMB.ProjectNoListner}" update="proNo"/>
+                                        <f:selectItems value="#{csContractMB.csProjects}" var="item" itemLabel="#{item.proshortName}" itemValue="#{item.proID}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="proNo" value="Project No"/>
+                                    <p:selectOneMenu id="proNo" value="#{csContractMB.csTor.torproNoID.PNoid}">
+                                        <f:selectItems value="#{csContractMB.csProjectnos}" var="item" itemLabel="#{item.PNoNO}" itemValue="#{item.PNoid}"/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                                <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2" >
+                                    <p:outputLabel for="conrName" value="Contractor Name"/>
+                                    <p:selectOneMenu id="conrName" filter="true" value="#{csContractMB.csTor.torconrID.conrID}">
+                                        <f:selectItems id="allContracotrs" value="#{csContractMB.csContractors}" var="item" itemLabel="#{item.conrName1} #{item.conrName2}" itemValue="#{item.conrID}"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton actionListener="#{csContractMB.GetAllContractors()}" update="allContracotrs" value="Refresh" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                                    <p:link outcome="/contractor/create" target="_blank" value="New"/>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" >
+                                    <p:outputLabel for="fromDate" value="From :"/>
+                                    <p:calendar label="From Data" required="true" id="fromDate" value="#{csContractMB.csTor.torfromDate}" style="width: 100%">
+                                        <p:ajax event="dateSelect" 
+                                                update="toDate" />
+                                    </p:calendar>
+
+                                    <p:outputLabel for="toDate" value="To :"/>
+                                    <p:calendar label="To Date" required="true" id="toDate" value="#{csContractMB.csTor.tortoDate}" style="width: 100%"  mindate="#{csContractMB.csTor.torfromDate}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+                                    <p:outputLabel for="obj" value="Objectives :"/>
+                                    <p:inputTextarea required="true" id="obj" rows="1" value="#{csContractMB.csTor.torObjective}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+                                    <p:outputLabel for="torTaskAbove" value="Tasks :"/>
+                                    <p:inputTextarea id="torTaskAbove" rows="1" value="#{csContractMB.csTor.tortaskAbove}" style="width: 100%"/>
+                                    <p:outputLabel for="torTasks" value="Tasks Points :"/>
+                                    <p:inputTextarea id="torTasks" rows="1" value="#{csContractMB.csTor.torTasks}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+                                    <p:outputLabel for="placeAssign" value="Place(s) of Assignment :"/>
+                                    <p:inputTextarea id="placeAssign" rows="1" value="#{csContractMB.csTor.torPlace}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-11" >
+                                    <p:outputLabel value="1"/>
+                                    
+                                    <p:outputLabel value="2"/>
+                                    <p:selectOneMenu value="#{csContractMB.csTor.tor2empID.empID}">
+                                        <f:selectItem noSelectionOption="true" itemLabel="select"/>
+                                        <f:selectItems value="#{csContractMB.csEmployees}" var="item2" itemValue="#{item2.empID}" itemLabel="#{item2.empName} | #{item2.empPosition} | #{item2.empmobileNo} | #{item2.empEmail}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="3"/>
+                                    <p:selectOneMenu required="true" value="#{csContractMB.csTor.tor3empID.empID}">
+                                        <f:selectItem noSelectionOption="true" itemLabel="select"/>
+                                        <f:selectItems value="#{csContractMB.csEmployees}" var="item3" itemValue="#{item3.empID}" itemLabel="#{item3.empName} | #{item3.empPosition} | #{item3.empmobileNo} | #{item3.empEmail}"/>
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+                                
+        </div>
+    </div>
+</ui:component>

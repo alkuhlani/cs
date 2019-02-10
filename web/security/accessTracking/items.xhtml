@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="head">
+        <!--head-->
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="ui-g" >
+            <f:event type="preRenderComponent" listener="#{accessTrackingMB.prepareItemsOnly(2)}"/>      
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <!--<h1></h1>-->
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:commandButton actionListener="#{accessTrackingMB.prepareItemsOnly(3)}" 
+                                             type="submit" 
+                                             update="request-form"  
+                                             value="All"
+                                             styleClass="amber-btn" style="margin-bottom:10px;"/>
+                            <p:commandButton  actionListener="#{accessTrackingMB.prepareItemsOnly(2)}" 
+                                              type="submit" 
+                                              update="request-form"  
+                                              value="Today"/>
+                            <p:commandButton  actionListener="#{accessTrackingMB.prepareItemsOnly(1)}" 
+                                              type="submit" 
+                                              update="request-form"  
+                                              value="Yesterday"/>
+                            
+                        </f:facet>
+                    </p:toolbar>
+
+                    <h:form id="request-form">
+                        <p:dataTable var="item" value="#{accessTrackingMB.items}"  reflow="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,20,40,100"
+                                     resizableColumns="true">
+
+                            <p:column  headerText="id" filterBy="#{item.id}" sortBy="#{item.id}" style="text-align: center">
+                                <h:outputText value="#{item.id}"/>
+                            </p:column> 
+                            <p:column  headerText="actionType" filterBy="#{item.actionType}" sortBy="#{item.actionType}" style="text-align: center">
+                                <h:outputText value="#{item.actionType}"/>
+                            </p:column>  
+                            <p:column  headerText="actionDesc" filterBy="#{item.actionDesc}" sortBy="#{item.actionDesc}" style="text-align: center">
+                                <h:outputText value="#{item.actionDesc}"/>
+                            </p:column>  
+                            <p:column  headerText="userName" filterBy="#{item.userName}" sortBy="#{item.userName}" style="text-align: center">
+                                <h:outputText value="#{item.userName}"/>
+                            </p:column>                
+                            <p:column  headerText="createTime" filterBy="#{item.createTime}" sortBy="#{item.createTime}" style="text-align: center">
+                                <h:outputText value="#{item.createTime}"/>
+                            </p:column>                
+
+                            <p:column  headerText="status" filterBy="#{item.status}" sortBy="#{item.status}" style="text-align: center">
+                                <h:outputText value="#{item.status}"/>
+                            </p:column>                
+                            <p:column  headerText="user name" filterBy="#{item.securityUser.name}" sortBy="#{item.securityUser.name}" style="text-align: center">
+                                <h:outputText value="#{item.securityUser.name}"/>
+                            </p:column>                
+
+
+
+
+                        </p:dataTable>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>

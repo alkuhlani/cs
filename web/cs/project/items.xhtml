@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="ui-g">  
+                <div class="ui-g-12">
+                    <p:breadCrumb>
+                        <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                        <p:menuitem value="Project" url="/cs/project/items.xhtml" />
+                        <p:menuitem value="New" url="/cs/project/create.xhtml" />
+                    </p:breadCrumb>
+                    <div class="card">
+                        <f:event type="preRenderComponent" listener="#{csProjectMB.prepareItems()}"/>      
+                        <p:dataGrid var="item" value="#{csProjectMB.items}" columns="2" layout="grid"
+                                    rows="6" paginator="true" id="cars"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="3,6,9,12,16">
+                            <p:panel header="#{item.proID}: #{item.proshortName}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:outputText value="#{item.profullName}" styleClass="Fs14 FontDosisMedium"/>
+                                    <h:panelGrid columns="2" style="width:100%">
+                                        <p:commandButton icon="ui-icon-search" styleClass="AquaButton" update=":form:selectedCarDetail" oncomplete="PF('itemDialog').show()" style="float: right">
+                                            <f:setPropertyActionListener value="#{item}" target="#{csProjectMB.item}" />
+                                        </p:commandButton>
+                                        <p:button icon="fa fa-edit"  outcome="update" style="float: left">
+                                            <f:param name="id" value="#{item.proID}"/>
+                                        </p:button>
+                                    </h:panelGrid>
+
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dataGrid>
+                        <p:dialog header="Project Info" widgetVar="itemDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" responsive="true" closeOnEscape="true">
+                            <p:outputPanel id="selectedCarDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty csProjectMB.item}" columnClasses="label,value">
+                                    <h:outputText value="ID:" />
+                                    <h:outputText value="#{csProjectMB.item.proID}" />
+                                    <h:outputText value="Short Name:" />
+                                    <h:outputText value="#{csProjectMB.item.proshortName}" />
+                                    <h:outputText value="Full Name:" />
+                                    <h:outputText value="#{csProjectMB.item.profullName}" />
+                                    <h:outputText value="Project IDs:" />
+                                    <p:dataScroller value="#{csProjectMB.item.csProjectnoList}" var="pID">
+                                        <h:outputText value="#{pID.PNoNO}"/>
+                                    </p:dataScroller>
+                                    <h:outputText value="Project Symbol:" />
+                                    <h:outputText value="#{csProjectMB.item.proX}" />
+                                    <h:outputText value="Country Name:" />
+                                    <h:outputText value="#{csProjectMB.item.proCountry}" />
+                                    <h:outputText value="City Name:" />
+                                    <h:outputText value="#{csProjectMB.item.proCity}" />
+                                    <h:outputText value="Office Name:" />
+                                    <h:outputText value="#{csProjectMB.item.proAddress1}" />
+                                    <h:outputText value="Street Name:" />
+                                    <h:outputText value="#{csProjectMB.item.proAddress2}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

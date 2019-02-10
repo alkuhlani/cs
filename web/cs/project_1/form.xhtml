@@ -1,0 +1,50 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui">
+
+    <p:link outcome="items" style="text-decoration: none" class="fa fa-arrow-up"/>
+    <p:separator/>
+    <p:messages showDetail="true" autoUpdate="true" closable="true" />
+    <!--<p:focus context="panel"/>-->
+    <p:panelGrid id="panel" columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" 
+                 layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                 style="border:0px none; background-color:transparent" >
+       
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputTextarea rows="1" id="pro_name" value="#{csProjectMB.item.profullName}" style="width: 100%"/>
+            <label>Full Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="pro_short_name" value="#{csProjectMB.item.proshortName}" style="width: 100%"/>
+            <label>Short Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="pro_country" value="#{csProjectMB.item.proCountry}" style="width: 100%"/>
+            <label>Country Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="pro_city" value="#{csProjectMB.item.proCity}" style="width: 100%"/>
+            <label>City Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="pro_office" value="#{csProjectMB.item.proAddress1}" style="width: 100%"/>
+            <label>Office Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="pro_street" value="#{csProjectMB.item.proAddress2}" style="width: 100%"/>
+            <label>Street Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="pro_symbol" value="#{csProjectMB.item.proX}" style="width: 100%"/>
+            <label>Project Symbol</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:chips id="pro_IDs" value="#{csProjectMB.proIDs}" placeholder="Project IDs" title="Project IDs" style="width: 100%"/>
+        </h:panelGroup>
+
+        
+    </p:panelGrid>
+
+</ui:component>

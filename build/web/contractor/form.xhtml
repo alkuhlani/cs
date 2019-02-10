@@ -1,0 +1,119 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:o="http://omnifaces.org/ui">
+    <p:link outcome="items" style="text-decoration: none" class="fa fa-arrow-up"/>
+    <p:messages showDetail="true" autoUpdate="true" closable="true" />
+    <!--<p:focus context="panel"/>-->
+    <p:panelGrid id="panel" columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" 
+                 layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                 style="border:0px none; background-color:transparent" >
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="Title" required="true" id="conr_conrTitle" value="#{csContractorMB.item.conrTitle}" style="width: 100%"/>
+            <label>Title</label>
+        </h:panelGroup>
+        <p:selectOneRadio required="true" id="conr_conrGnder" value="#{csContractorMB.item.conrGender}">
+            <f:selectItem itemValue="true" itemLabel="Male" />
+            <f:selectItem itemValue="false" itemLabel="Female"/>
+        </p:selectOneRadio>
+        
+        <h:panelGroup  styleClass="md-inputfield">
+            <p:inputText label="First,Second,Third Name" required="true" id="conr_conrName1" value="#{csContractorMB.item.conrName1}" style="width: 100%"/>
+            <label>First,Second,Third Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="Family Name" required="true" id="conr_conrName2" value="#{csContractorMB.item.conrName2}" style="width: 100%"/>
+            <label>Family Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:calendar label="Date of Birthday" required="true" id="conr_conrBirthdate" value="#{csContractorMB.item.conrBirthdate}" style="width: 100%"/>
+            <label>Date of Birthday</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="Nationality" required="true" id="conr_conrNationality" value="#{csContractorMB.item.conrNationality}" style="width: 100%"/>
+            <label>Nationality</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="Country" required="true" id="conr_conrCountry" value="#{csContractorMB.item.conrCountry}" style="width: 100%"/>
+            <label>Country</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="City" required="true" id="conr_conrGover" value="#{csContractorMB.item.conrGover}" style="width: 100%"/>
+            <label>City</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrStreet" value="#{csContractorMB.item.conrStreet}" style="width: 100%"/>
+            <label>Street</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="Mobile No" required="true" id="conr_conrmobileNo" value="#{csContractorMB.item.conrmobileNo}" style="width: 100%"/>
+            <label>Mobile No</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText label="Email" required="true" id="conr_conrEmail" value="#{csContractorMB.item.conrEmail}" style="width: 100%"/>
+            <label>Email</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBName" value="#{csContractorMB.item.conrBName}" style="width: 100%"/>
+            <label>Bank Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBAhn" value="#{csContractorMB.item.conrBAhn}" style="width: 100%"/>
+            <label>Account Holder Name</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBCountry" value="#{csContractorMB.item.conrBCountry}" style="width: 100%"/>
+            <label>Country</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBBranch" value="#{csContractorMB.item.conrBBranch}" style="width: 100%"/>
+            <label>Branch</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBAn" value="#{csContractorMB.item.conrBAn}" style="width: 100%"/>
+            <label>Account Number</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBAc" value="#{csContractorMB.item.conrBAc}" style="width: 100%"/>
+            <label>Account Currency</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBBlz" value="#{csContractorMB.item.conrBBlz}" style="width: 100%"/>
+            <label>BLZ</label>
+        </h:panelGroup>
+        <h:panelGroup styleClass="md-inputfield">
+            <p:inputText id="conr_conrBSc" value="#{csContractorMB.item.conrBSc}" style="width: 100%"/>
+            <label>Swift Code</label>
+        </h:panelGroup>
+    </p:panelGrid>
+
+
+    <div class="ui-grid-col-6">
+        <p:fileUpload label="CV" rendered="#{csContractorMB.isUpdate}"
+                      value="#{csContractorMB.fileCV}" mode="advanced" sizeLimit="5242880" 
+                      fileUploadListener="#{csContractorMB.fileUploadListenerCV}" >
+        </p:fileUpload>
+        <p:outputLabel value="NO CV" rendered="#{sessionMB.CV eq null and csContractorMB.isUpdate}"/>
+    </div>
+    <div class="ui-grid-col-6">
+        <p:fileUpload label="ID" rendered="#{csContractorMB.isUpdate}"
+                      value="#{csContractorMB.fileID}" mode="advanced" sizeLimit="5242880" 
+                      fileUploadListener="#{csContractorMB.fileUploadListenerID}">
+        </p:fileUpload>
+        <p:outputLabel value="NO ID" rendered="#{sessionMB.ID eq null and csContractorMB.isUpdate}"/>
+    </div>
+
+
+
+    <!--start-->
+    <p:media cache="false" value="#{sessionMB.CV}" width="50%" height="500" player="pdf" rendered="#{!(sessionMB.CV eq null) and csContractorMB.isUpdate}"> 
+        <f:param name="id" value="#{csContractorMB.idFile}"/>
+    </p:media>
+    <p:media cache="false" value="#{sessionMB.ID}" width="50%" height="500" player="pdf" rendered="#{!(sessionMB.ID eq null) and csContractorMB.isUpdate}">
+        <f:param name="id" value="#{csContractorMB.idFile}"/>
+    </p:media>
+    <br/> 
+    <!--end-->
+</ui:component>

@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <f:event type="preRenderComponent" listener="#{csContractorMB.prepareUpdate(param['id'])}"/>
+        <f:event type="preRenderComponent" listener="#{sessionMB.getCVID(param['id'])}"/>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                    <p:menuitem value="Contractor" url="/contractor/items.xhtml" />
+                    <p:menuitem value="#{csContractorMB.conr_name}" url="" />
+                </p:breadCrumb>
+                <div class="card">
+                    <h:form enctype="multipart/form-data">
+                        
+                        <ui:include src="form.xhtml"/>
+                        <div style="text-align: center">
+                            <p:commandButton value="update with refresh" action="#{csContractorMB.updateWithRefresh()}">
+                                <p:confirm header="confirme" message="do you want" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:commandButton value="update with exit" action="#{csContractorMB.update()}">
+                                <p:confirm header="confirme" message="do you want" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                        </div>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+
+
+

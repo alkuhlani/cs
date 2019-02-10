@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                    <p:menuitem value="Contract" url="/contract/items.xhtml" />
+                    <p:menuitem value="New" url="/contract/new.xhtml" />
+                </p:breadCrumb>
+                <div class="card">
+                    <h:form>
+                        <f:event type="preRenderComponent" listener="#{csContractMB.prepareItems()}"/>      
+                        <p:dataTable var="item" value="#{csContractMB.csTors}"
+                                     reflow="true"
+                                     rowsPerPageTemplate="20,50,100,1000,5000,10000"
+                                     rows="100"
+                                     paginator="true" 
+                                     resizableColumns="true"
+                                     paginatorTemplate="{CurrentPageReport} 
+                                     {FirstPageLink} 
+                                     {PreviousPageLink} 
+                                     {PageLinks} 
+                                     {NextPageLink} 
+                                     {LastPageLink} 
+                                     {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="(Displaying 
+                                     {startRecord} - {endRecord} 
+                                     of {totalRecords}, 
+                                     Page: {currentPage}/{totalPages})"
+                                     id="items" 
+                                     rowIndexVar="index">
+                            <p:column headerText="#" width="5%" style="text-align: center">
+                                <p:link value="#{item.torId}" outcome="update?faces-redirect=true">
+                                    <f:param name="id" value="#{item.torId}"/>
+                                </p:link>
+                            </p:column>
+                            <p:column  headerText="first name" filterBy="#{item.tortempProID}" style="text-align: center">
+                                <h:outputText value="#{item.tortempProID}"/>
+                            </p:column>                
+                            <p:column  headerText="first name" filterBy="#{item.torconrID.conrName1}" style="text-align: center">
+                                <h:outputText value="#{item.torconrID.conrName1}"/>
+                            </p:column>                
+                            <p:column  headerText="first name" filterBy="#{item.torconrID.conrName2}" style="text-align: center">
+                                <h:outputText value="#{item.torconrID.conrName2}"/>
+                            </p:column>                
+                            <p:column sortBy="#{item.torType}" style="text-align: center">
+                                <p:splitButton value="choose" rendered="#{item.torType eq 0 or item.torType eq -1}">
+                                    <p:menuitem value="#{(item.csContract eq null)?'Add Contract':'Contract'}" outcome="contract" >
+                                        <f:param name="id" value="#{item.torId}"/>
+                                    </p:menuitem>
+                                    <p:menuitem value="Hide" rendered="#{item.torType eq 0}"/>
+                                    <p:menuitem value="Show" rendered="#{item.torType eq -1}"/>
+                                </p:splitButton>
+                            </p:column>                
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+

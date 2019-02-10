@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p:breadCrumb>
+                <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                <p:menuitem value="Project" url="/cs/project/items.xhtml" />
+            </p:breadCrumb>
+                <div class="card">
+                    <h:form>
+                        <f:event type="preRenderComponent" listener="#{csProjectMB.prepareItems()}"/>      
+                        <p:link outcome="create" style="text-decoration: none" class="fa fas fa-plus"/>
+                        <p:separator/>
+    <!--                        <p:dataTable var="item" value="#{csProjectMB.items}"
+                                         reflow="true"
+                                         rowsPerPageTemplate="20,50,100,1000,5000,10000"
+                                         rows="100"
+                                         paginator="true" 
+                                         resizableColumns="true"
+                                         paginatorTemplate="{CurrentPageReport} 
+                                         {FirstPageLink} 
+                                         {PreviousPageLink} 
+                                         {PageLinks} 
+                                         {NextPageLink} 
+                                         {LastPageLink} 
+                                         {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="(Displaying 
+                                         {startRecord} - {endRecord} 
+                                         of {totalRecords}, 
+                                         Page: {currentPage}/{totalPages})"
+                                         id="items" 
+                                         rowIndexVar="index">
+                                <p:column headerText="#" width="5%" style="text-align: center">
+                                    <p:link value="#{item.proID}" outcome="update?faces-redirect=true">
+                                        <f:param name="id" value="#{item.proID}"/>
+                                    </p:link>
+                                </p:column>
+                                <p:column  headerText="name" filterBy="#{item.profullName}" style="text-align: center">
+                                    <h:outputText value="#{item.profullName}"/>
+                                </p:column>                
+
+                            </p:dataTable>
+                            -->
+                        <p:dataGrid var="item" value="#{csProjectMB.items}" columns="2" layout="grid"
+                                    rows="6" paginator="true" id="cars"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="3,6,9,12,16">
+
+                            <p:panel header="#{item.proID}: #{item.proshortName}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:outputText value="#{item.profullName}" styleClass="Fs14 FontDosisMedium"/>
+                                </h:panelGrid>
+                            </p:panel>
+
+                        </p:dataGrid>
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+

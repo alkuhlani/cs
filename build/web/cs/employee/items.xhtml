@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p:breadCrumb>
+                <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                <p:menuitem value="Employee" url="/cs/employee/items.xhtml" />
+                <p:menuitem value="New" url="/cs/employee/create.xhtml" />
+            </p:breadCrumb>
+                <div class="card">
+                    <h:form>
+                        <f:event type="preRenderComponent" listener="#{csEmployeeMB.prepareItems()}"/>      
+                            <p:dataTable var="item" value="#{csEmployeeMB.items}"
+                                         reflow="true"
+                                         rowsPerPageTemplate="20,50,100,1000,5000,10000"
+                                         rows="100"
+                                         paginator="true" 
+                                         resizableColumns="true"
+                                         paginatorTemplate="{CurrentPageReport} 
+                                         {FirstPageLink} 
+                                         {PreviousPageLink} 
+                                         {PageLinks} 
+                                         {NextPageLink} 
+                                         {LastPageLink} 
+                                         {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="(Displaying 
+                                         {startRecord} - {endRecord} 
+                                         of {totalRecords}, 
+                                         Page: {currentPage}/{totalPages})"
+                                         id="items" 
+                                         rowIndexVar="index">
+                                <p:column headerText="#" width="5%" style="text-align: center">
+                                    <p:link value="#{item.empID}" outcome="update?faces-redirect=true">
+                                        <f:param name="id" value="#{item.empID}"/>
+                                    </p:link>
+                                </p:column>
+                                <p:column  headerText="Name" filterBy="#{item.empName}" style="text-align: center">
+                                    <h:outputText value="#{item.empName}"/>
+                                </p:column>                
+                                <p:column  headerText="Position" filterBy="#{item.empPosition}" style="text-align: center">
+                                    <h:outputText value="#{item.empPosition}"/>
+                                </p:column>                
+                                <p:column  headerText="Mobile No" filterBy="#{item.empmobileNo}" style="text-align: center">
+                                    <h:outputText value="#{item.empmobileNo}"/>
+                                </p:column>                
+                                <p:column headerText="default" filterBy="#{item.empType}" style="text-align: center">
+                                    <h:outputText rendered="#{item.empisDefaultTor}" style="color: red" value="#{item.empType}"/>
+                                </p:column>                
+
+                            </p:dataTable>
+                            
+                        
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+

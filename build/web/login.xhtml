@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>PrimeFaces Barcelona</title>
+        <h:outputScript name="js/ripple.js" library="barcelona-layout" />
+        <h:outputScript name="js/layout.js" library="barcelona-layout" />
+    </h:head>
+
+    <h:body styleClass="login-body">
+        
+        <div class="login-panel ui-fluid">
+            <div class="ui-g">
+                <div class="ui-g-12 login-header">
+                    <h1>LOGIN</h1>
+                    <h2>Welcome to Barcelona</h2>
+                    <p:graphicImage name="images/logo.png" library="barcelona-layout" />
+                </div>
+                <div class="ui-g-12">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText />
+                        <label>Username</label>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-g-12">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:password feedback="false"/>
+                        <label>Password</label>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-g-12 chkbox-container">
+                    <p:selectBooleanCheckbox id="remember-me" />
+                    <p:outputLabel for="remember-me" value="Remember Me"/>
+                </div>
+                <div class="ui-g-12 button-container">
+                    <p:button outcome="/dashboard" value="Sign In" icon="ui-icon-person" />
+                </div>
+            </div>
+        </div>
+        
+        <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
+    </h:body>
+
+</html>

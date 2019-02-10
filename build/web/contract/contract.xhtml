@@ -1,0 +1,949 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="content">
+        <f:event type="preRenderComponent" listener="#{csContractMB.prepareContract(param['id'])}"/>
+        <f:event type="preRenderComponent" listener="#{sessionMB.getTorContent(param['id'])}"/>
+        <f:event type="preRenderComponent" listener="#{sessionMB.getCVID(csContractMB.csTor.torconrID.conrID)}"/>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                    <p:menuitem value="Contract" url="items.xhtml" />
+                    <p:menuitem value="#{csContractMB.csTor.tortempProID}" url="" />
+                </p:breadCrumb>
+                <div class="card">
+                    <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tabView >
+                        <p:tab title="TOR">
+                            <h:form id="for-tor">
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4" >
+                                    <p:outputLabel for="contractNo" value="Contract No"/>
+                                    <p:inputText id="contractNo" value="#{csContractMB.csTor.tortempProID}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" >
+                                    <p:outputLabel for="proID" value="Project Name"/>
+                                    <p:selectOneMenu id="proID" value="#{csContractMB.csTor.torproID.proID}">
+                                        <p:ajax event="change" listener="#{csContractMB.ProjectNoListner}" update="for-tor"/>
+                                        <f:selectItem noSelectionOption="true" itemLabel="select"/>
+                                        <f:selectItems value="#{csContractMB.csProjects}" var="item10" itemLabel="#{item10.proshortName}" itemValue="#{item10.proID}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="proNo" value="Project No"/>
+                                    <p:selectOneMenu id="proNo" value="#{csContractMB.csTor.torproNoID.PNoid}">
+                                        <f:selectItems value="#{csContractMB.csProjectnos}" var="item11" itemLabel="#{item11.PNoNO}" itemValue="#{item11.PNoid}"/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                                <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2" >
+                                    <p:outputLabel for="conrName" value="Contractor Name"/>
+                                    <p:selectOneMenu id="conrName" filter="true" value="#{csContractMB.csTor.torconrID.conrID}">
+                                        <f:selectItems id="allContracotrs" value="#{csContractMB.csContractors}" var="item" itemLabel="#{item.conrName1} #{item.conrName2}" itemValue="#{item.conrID}"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton actionListener="#{csContractMB.GetAllContractors()}" update="allContracotrs" value="Refresh" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                                    <p:link outcome="/contractor/create" target="_blank" value="New"/>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" >
+                                    <p:outputLabel for="fromDate" value="From :"/>
+                                    <p:calendar label="From Data" required="true" id="fromDate" value="#{csContractMB.csTor.torfromDate}" style="width: 100%">
+                                        <p:ajax event="dateSelect" 
+                                                update="toDate" />
+                                    </p:calendar>
+
+                                    <p:outputLabel for="toDate" value="To :"/>
+                                    <p:calendar label="To Date" required="true" id="toDate" value="#{csContractMB.csTor.tortoDate}" style="width: 100%"  mindate="#{csContractMB.csTor.torfromDate}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+                                    <p:outputLabel for="obj" value="Objectives :"/>
+                                    <p:inputTextarea required="true" id="obj" rows="1" value="#{csContractMB.csTor.torObjective}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+                                    <p:outputLabel for="torTaskAbove" value="Tasks :"/>
+                                    <p:inputTextarea id="torTaskAbove" rows="1" value="#{csContractMB.csTor.tortaskAbove}" style="width: 100%"/>
+                                    <p:outputLabel for="torTasks" value="Tasks Points :"/>
+                                    <p:inputTextarea id="torTasks" rows="1" value="#{csContractMB.csTor.torTasks}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+                                    <p:outputLabel for="placeAssign" value="Place(s) of Assignment :"/>
+                                    <p:inputTextarea id="placeAssign" rows="1" value="#{csContractMB.csTor.torPlace}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-11" >
+                                    <p:outputLabel value="1"/>
+                                    <p:selectOneMenu value="#{csContractMB.csTor.tor1empID}" converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem noSelectionOption="true" itemLabel="select"/>
+                                        <f:selectItems value="#{csContractMB.csEmployees}" var="item1" itemValue="#{item1}" itemLabel="#{item1.empName} | #{item1.empPosition} | #{item1.empmobileNo} | #{item1.empEmail}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="2"/>
+                                    <p:selectOneMenu value="#{csContractMB.csTor.tor2empID}" converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem noSelectionOption="true" itemLabel="select"/>
+                                        <f:selectItems value="#{csContractMB.csEmployees}" var="item1" itemValue="#{item1}" itemLabel="#{item1.empName} | #{item1.empPosition} | #{item1.empmobileNo} | #{item1.empEmail}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="3"/>
+                                    <p:selectOneMenu value="#{csContractMB.csTor.tor3empID}" converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem noSelectionOption="true" itemLabel="select"/>
+                                        <f:selectItems value="#{csContractMB.csEmployees}" var="item1" itemValue="#{item1}" itemLabel="#{item1.empName} | #{item1.empPosition} | #{item1.empmobileNo} | #{item1.empEmail}"/>
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+
+                                <div style="text-align: center" icon="ui-icon-check">
+                                    <p:commandButton style="text-align: center" 
+                                                     value="Save" styleClass="amber-btn" 
+                                                     action="#{csContractMB.saveTor1()}" />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Work Plan">
+                            <h:form id="for-wp">
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-9" >
+                                    <p:outputLabel for="torWpAfter" value="Work Plan/"/>
+                                    <p:inputText id="torWpAfter" value="#{csContractMB.csTor.torWpAfter}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-9">
+                                    <p:outputLabel for="torPsAfter" value="Program Scedule/"/>
+                                    <p:inputText id="torPsAfter" value="#{csContractMB.csTor.torPsAfter}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-6,ui-grid-col-1">
+                                    <p:outputLabel value="No."/>
+                                    <p:inputText value="#{csContractMB.csWorkplan.wpNo}" style="width: 100%"/>
+                                    <p:outputLabel value="Description"/>
+                                    <p:inputTextarea rows="1" value="#{csContractMB.csWorkplan.wpDesc}" style="width: 100%"/>
+                                    <p:outputLabel value=""/>
+                                    <p:outputLabel value="Days"/>
+                                    <p:inputText value="#{csContractMB.csWorkplan.wpdayNO}" style="width: 100%"/>
+                                    <p:outputLabel value="Remaks"/>
+                                    <p:inputTextarea rows="1" value="#{csContractMB.csWorkplan.wpRemark}" style="width: 100%"/>
+                                    <p:commandButton value="Add" actionListener="#{csContractMB.addWorkPlanInCon()}" update="wp-tor"/>
+                                </p:panelGrid>
+                                <p:dataTable id="wp-tor" 
+                                             sortBy="#{item.wptorID.torId}" 
+                                             value="#{csContractMB.csWorkplans}" 
+                                             var="item" resizableColumns="true" editable="true">
+                                    <p:ajax event="rowEdit" listener="#{csContractMB.onRowEdit}" update="msgs,wp-tor" />
+                                    <p:ajax event="rowEditCancel" listener="#{csContractMB.onRowCancel}" update="msgs,wp-tor" />
+                                    <p:column headerText="No." width="5%">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel value="#{item.wpNo}"/></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{item.wpNo}" style="width: 100%"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Description" style="white-space: pre-wrap;table-layout: fixed;word-wrap: break-word">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel value="#{item.wpDesc}" style="white-space: pre-wrap;table-layout: fixed;word-wrap: break-word"/></f:facet>
+                                            <f:facet name="input"><p:inputTextarea  value="#{item.wpDesc}" style="width: 100%"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Days" width="5%">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><p:outputLabel value="#{item.wpdayNO}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{item.wpdayNO}" style="width: 100%"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Remarks" width="20%" style="white-space: pre-wrap;table-layout: fixed;word-wrap: break-word">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.wpRemark}" style="white-space: pre-wrap;table-layout: fixed;word-wrap: break-word"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputTextarea  value="#{item.wpRemark}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column style="width:35px">
+                                        <p:rowEditor />
+                                    </p:column>
+                                    <p:summaryRow>
+                                        <p:column colspan="2" style="text-align:right">
+                                            <h:outputText value="Total:" />
+                                        </p:column>
+                                        <p:column colspan="3">
+                                            <h:outputText  value="#{csContractMB.workingDays}"/>
+                                        </p:column>
+                                    </p:summaryRow>
+                                    <p:column style="width:28px">
+                                        <p:commandButton icon="ui-icon-delete" 
+                                                         actionListener="#{csContractMB.deleteWP(item.wpID)}" update="wp-tor"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <div style="text-align: center" icon="ui-icon-check">
+                                    <p:commandButton style="text-align: center" value="Save" styleClass="amber-btn" 
+                                                     action="#{csContractMB.saveTor()}" />
+
+
+
+
+                                </div>
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:commandLink value="#{(sessionMB.conWP eq null)?'Generate PDF':'Update PDF'}" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate4(1)}" />
+                                        <p:commandLink value="Generate Docx" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate4(2)}" />
+
+                                    </p:panelGrid>
+
+
+                                    <p:outputLabel value="NO Work Plan" rendered="#{sessionMB.conWP eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conWP eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show Work Plan"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showWP}" label="Show Work Plan" >
+                                            <p:ajax update="for-wp" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="wpMedia" value="#{sessionMB.conWP}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showWP}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="General Term">
+                            <h:form id="for_gt">
+                                <label > Show General Term <p:selectBooleanCheckbox label="Show General Term .." value="#{csContractMB.showGeneralTerm}">
+                                        <p:ajax update="for_gt" />
+                                    </p:selectBooleanCheckbox></label>
+                                <p:media rendered="#{csContractMB.showGeneralTerm}"  id="feesch" value="/resources/gtc.pdf" width="100%" height="1000px">
+                                    Your browser can't display pdf, <h:outputLink value="/resources/gtc.pdf">click</h:outputLink> to download pdf instead.
+                                </p:media>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Time Sheet">
+                            <h:form id="form_ts">
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:commandLink value="#{(sessionMB.conTS eq null)?'Generate PDF':'Update PDF'}" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate5(1)}" />
+                                        <p:commandLink value="Generate Docx" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate5(2)}" />
+                                    </p:panelGrid>
+                                    <p:outputLabel value="NO Time Sheet" rendered="#{sessionMB.conTS eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conTS eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show Time Sheet"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showTimeSheet}" label="Show Time Sheet" >
+                                            <p:ajax update="form_ts" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="tsMedia" value="#{sessionMB.conTS}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showTimeSheet}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Security Declaration">
+                            <h:form id="form_sd">
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:commandLink value="#{(sessionMB.conSD eq null)?'Generate PDF':'Update PDF'}" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate6(1)}" />
+                                        <p:commandLink value="Generate Docx" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate6(2)}" />
+                                    </p:panelGrid>
+                                    <p:outputLabel value="NO Security Declaration" rendered="#{sessionMB.conSD eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conSD eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show Security Declaration"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showSD}" label="Show Security Declaration" >
+                                            <p:ajax update="form_sd" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="tsMedia" value="#{sessionMB.conSD}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showSD}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Honorarium">
+                            <h:form id="for_h">
+                                <p:panelGrid columns="6" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-1,ui-grid-col-1" >
+                                    <p:inputText value="#{csContractMB.item.conHonorarium}" style="width: 100%">
+                                        <p:ajax event="keyup" update="conHonorarium" />
+                                    </p:inputText>
+                                    <p:outputLabel value="YER"/>
+                                    <p:outputLabel value="lumb sum"/>
+                                    <p:outputLabel value="#{csContractMB.workingDays} #{(csContractMB.workingDays>1)?'Day/s':'Day'}"/>
+                                    <p:outputLabel id="conHonorarium" value="#{csContractMB.workingDays*csContractMB.item.conHonorarium} YER"/>
+                                    <p:commandButton action="#{csContractMB.saveH()}"  value="Save" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                                    <p:outputLabel value="Show Fee Schedule"></p:outputLabel>
+                                    <p:selectBooleanCheckbox label="Show Fee Schedule .." value="#{csContractMB.showFeeSchedule}">
+                                        <p:ajax update="for_h" />
+                                    </p:selectBooleanCheckbox>
+                                </p:panelGrid>
+                                <p:media rendered="#{csContractMB.showFeeSchedule}"  id="feesch" value="/resources/nfs.pdf" width="100%" height="1000px">
+                                    Your browser can't display pdf, <h:outputLink value="/resources/nfs.pdf">click</h:outputLink> to download pdf instead.
+                                </p:media>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Per-diem Calculation">
+                            <h:form id="for_pc">
+                                <p:panelGrid columns="6" layout="grid" columnClasses="ui-grid-col-1,
+                                             ui-grid-col-1,
+                                             ui-grid-col-2,
+                                             ui-grid-col-2,
+                                             ui-grid-col-4,
+                                             ui-grid-col-2">
+                                    <p:outputLabel value="Day:"/>
+                                    <p:inputText label="Day" required="true" value="#{csContractMB.csPa.paconrdayNo}" style="width: 100%"/>
+                                    <p:outputLabel value="Per-Diem:"/>
+                                    <p:inputText label="Per-Diem" required="true" value="#{csContractMB.csPa.paPerAvrg}" style="width: 100%">
+                                        <p:ajax event="keyup" listener="#{csContractMB.PerdiemListner}" update="paPerAmount" />
+                                    </p:inputText>
+                                    <p:outputLabel value="Lump-sum Subsistence Allowance:"/>
+                                    <p:selectOneMenu value="#{csContractMB.csPa.paPerType}" style="width: 100%">
+                                        <p:ajax event="change" listener="#{csContractMB.PerdiemListner}" update="paPerDesc,paPerAmount"/>
+                                        <f:selectItem itemLabel="2/3" itemValue="2/3"/>
+                                        <f:selectItem itemLabel="1" itemValue="1"/>
+                                    </p:selectOneMenu>
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="6" layout="grid" columnClasses="ui-grid-col-2,
+                                             ui-grid-col-1,
+                                             ui-grid-col-1,
+                                             ui-grid-col-2,
+                                             ui-grid-col-1,
+                                             ui-grid-col-5" >
+                                    <p:outputLabel value="Provided Items:"/>
+                                    <p:inputTextarea value="#{csContractMB.csPa.paPerItems}" rows="1" style="width: 100%"/>
+                                    <p:outputLabel value="Amount YER:"/>
+                                    <p:inputText label="Amount" required="true" id="paPerAmount" value="#{csContractMB.csPa.paPerAmount}" style="width: 100%">
+                                        <f:convertNumber pattern="#0.00" maxFractionDigits="0" />
+                                    </p:inputText>
+                                    <p:outputLabel value="Description:"/>
+                                    <p:inputText id="paPerDesc" value="#{csContractMB.csPa.paPerDesc}" style="width: 100%"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="7" layout="grid" columnClasses="ui-grid-col-2,
+                                             ui-grid-col-2,
+                                             ui-grid-col-1,
+                                             ui-grid-col-2,
+                                             ui-grid-col-1,
+                                             ui-grid-col-3,
+                                             ui-grid-col-1" >
+                                    <p:outputLabel value="Accommodation YER:"/>
+                                    <p:inputText label="Accommodation" required="true" value="#{csContractMB.csPa.paAccoAmount}" style="width: 100%"/>
+                                    <p:outputLabel value="Working Days:"/>
+                                    <p:selectOneMenu value="#{csContractMB.csPa.paaccoisWorkingDay}" style="width: 100%">
+                                        <f:selectItem itemLabel="YES" itemValue="true"/>
+                                        <f:selectItem itemLabel="NO" itemValue="false"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Remarks:"/>
+                                    <p:inputText value="#{csContractMB.csPa.paRemark}" style="width: 100%"/>
+                                    <p:commandButton actionListener="#{csContractMB.savePerdiem()}" update="for_pc"  value="Save" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                                </p:panelGrid>
+                                <p:dataTable sortBy="#{item.paconID.conID}" id="cs_pas" var="item" value="#{csContractMB.csPas}" resizableColumns="true" editable="true">
+                                    <p:ajax event="rowEdit" listener="#{csContractMB.onRowEditPA}" update="cs_pas,msgs" />
+                                    <p:ajax event="rowEditCancel" listener="#{csContractMB.onRowCancelPA}" update="cs_pas,msgs" />
+                                    <p:column headerText="Day:" width="5%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paconrdayNo}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paconrdayNo}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Per-Diem:" width="10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paPerAvrg}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paPerAvrg}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Lump-sum Subsistence Allowance:" width="5%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paPerType}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:selectOneMenu value="#{csContractMB.csPa.paPerType}" style="width: 100%">
+                                                    <f:selectItem itemLabel="2/3" itemValue="2/3"/>
+                                                    <f:selectItem itemLabel="1" itemValue="1"/>
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Provided Items:" width="5%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paPerItems}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paPerItems}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Amount YER:" width="10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paPerAmount}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paPerAmount}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Description:">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paPerDesc}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paPerDesc}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Accommodation YER" width="8%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paAccoAmount}"  />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paAccoAmount}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Working Days:" width="5%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{(item.paaccoisWorkingDay)?'1':'0'}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:selectOneMenu value="#{csContractMB.csPa.paaccoisWorkingDay}" style="width: 100%">
+                                                    <f:selectItem itemLabel="YES" itemValue="true"/>
+                                                    <f:selectItem itemLabel="NO" itemValue="false"/>
+                                                </p:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Remarks:" width="15%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.paRemark}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.paRemark}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column style="width:35px">
+                                        <p:rowEditor />
+                                    </p:column>
+                                    <p:column style="width:28px">
+                                        <p:commandButton icon="ui-icon-delete" 
+                                                         actionListener="#{csContractMB.deletePerdiem(item.paID)}" 
+                                                         update="cs_pas"/>
+                                    </p:column>
+                                    <p:summaryRow>
+                                        <p:column  style="text-align:right">
+                                            <h:outputText value="#{csContractMB.paDayTotal}" />
+                                        </p:column>
+                                        <p:column colspan="3">
+                                            <h:outputText  value="Average Daily Per-Diem"/>
+                                        </p:column>
+                                        <p:column >
+                                            <p:inputText value="#{csContractMB.item.conPerdiemAverage}" >
+                                                <p:ajax event="keyup" listener="#{csContractMB.saveAverage}" update="paDPerdiemTotal" />
+                                            </p:inputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText  value="Total Per-Diem average: "/>
+                                            <h:outputText id="paDPerdiemTotal" value="#{csContractMB.paDPerdiemTotal}">
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText  value="#{csContractMB.paAccoTotal}">
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column >
+                                            <h:outputText  value="#{csContractMB.paWorkingDayTotal}"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <h:outputText value=""/>
+                                        </p:column>
+                                    </p:summaryRow>
+                                </p:dataTable>
+                            </h:form>
+
+                        </p:tab>
+                        <p:tab title="Trips Sheet">
+                            <h:form id="for_ts">
+                                <p:panelGrid columns="8" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-4,
+                                             ui-grid-col-1,ui-grid-col-1,
+                                             ui-grid-col-1,ui-grid-col-1,
+                                             ui-grid-col-1,ui-grid-col-2" >
+                                    <p:outputLabel value="Destination"/>
+                                    <p:inputTextarea label="Destination" required="true" rows="1" value="#{csContractMB.csTran.traDesc}" style="width: 100%"/>
+                                    <p:outputLabel value="Times"/>
+                                    <p:inputText label="Times" required="true" value="#{csContractMB.csTran.traTimes}" style="width: 100%">
+                                        <p:ajax event="keyup" listener="#{csContractMB.TraListner}" update="traTotal" />
+                                    </p:inputText>
+                                    <p:outputLabel value="KM"/>
+                                    <p:inputText label="KM" required="true" value="#{csContractMB.csTran.traKM}" style="width: 100%"/>
+                                    <p:outputLabel value="Fess"/>
+                                    <p:inputText label="Fess" required="true" value="#{csContractMB.csTran.traCost}" style="width: 100%">
+                                        <p:ajax event="keyup" listener="#{csContractMB.TraListner}" update="traTotal" />
+                                    </p:inputText>
+                                </p:panelGrid>
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-3,
+                                             ui-grid-col-1,ui-grid-col-6,
+                                             ui-grid-col-1" >
+                                    <p:outputLabel value="Total"/>
+                                    <p:inputText label="Total" required="true" id="traTotal" value="#{csContractMB.csTran.traTotal}" style="width: 100%"/>
+                                    <p:outputLabel value="Remarks"/>
+                                    <p:inputTextarea rows="1" value="#{csContractMB.csTran.traRemark}" style="width: 100%"/>
+                                    <p:commandButton actionListener="#{csContractMB.addTripSheet()}"  value="Save" update="tra,for_ts" styleClass="amber-btn" style="margin-bottom:10px;" />
+                                </p:panelGrid>
+                                <p:dataTable value="#{csContractMB.csTrans}" id="tra" var="item" sortBy="#{item.traconID.conID}" editable="true">
+                                    <p:ajax event="rowEdit" listener="#{csContractMB.onRowEditTra}" update="msgs,tra" />
+                                    <p:ajax event="rowEditCancel" listener="#{csContractMB.onRowCancelTra}" update="msgs,tra" />
+                                    <p:column headerText="Destination">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.traDesc}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputTextarea value="#{item.traDesc}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Times" width="10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.traTimes}" style="width: 100%"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.traTimes}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="KM" width="10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.traKM}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.traKM}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Fees" width="10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.traCost}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.traCost}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Total" width="10%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.traTotal}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{item.traTotal}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Remark" >
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <p:outputLabel value="#{item.traRemark}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputTextarea value="#{item.traRemark}" style="width: 100%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column style="width:35px">
+                                        <p:rowEditor />
+                                    </p:column>
+                                    <p:column style="width:28px">
+                                        <p:commandButton icon="ui-icon-delete" 
+                                                         actionListener="#{csContractMB.deleteTripSheet(item.traID)}" update="tra"/>
+                                    </p:column>
+                                    <p:summaryRow>
+                                        <p:column  style="text-align:right">
+                                            <h:outputText value="Total" />
+                                        </p:column>
+                                        <p:column colspan="1">
+                                            <h:outputText  value="#{csContractMB.paTranTimesTotal}"/>
+                                        </p:column>
+                                        <p:column colspan="1">
+                                            <h:outputText  value="#{csContractMB.paTranKMTotal}">
+                                                <f:convertNumber pattern="#0.00" maxFractionDigits="0" />
+                                            </h:outputText>
+                                            <h:outputText  value=" km"/>
+                                        </p:column>
+                                        <p:column colspan="1">
+                                            <h:outputText  value="#{csContractMB.paTranFeesTotal}"/>
+                                        </p:column>
+                                        <p:column colspan="1">
+                                            <h:outputText  value="YER #{csContractMB.paTranTotalTotal}"/>
+                                        </p:column>
+                                        <p:column colspan="2" style="text-align:right">
+                                            <h:outputText value="" />
+                                        </p:column>
+                                    </p:summaryRow>
+                                </p:dataTable>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Other Expenses">
+                            <h:form id="for_o_e">
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-4,ui-grid-col-1,
+                                             ui-grid-col-2,ui-grid-col-3,
+                                             ui-grid-col-1,ui-grid-col-1" >
+                                    <p:inputText value="#{csContractMB.item.conOtherExpenses}" style="width: 100%">
+                                        <p:ajax event="keyup" update="ls" />
+                                    </p:inputText>
+                                    <p:outputLabel value="YER"/>
+                                    <p:outputLabel value="lumb sum"/>
+                                    <p:outputLabel id="ls" style="font: bold" value="#{csContractMB.item.conOtherExpenses} YER"/>
+                                    <p:commandButton action="#{csContractMB.saveH()}"  value="Save" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                                </p:panelGrid>
+
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Total Remuneration">
+                            <h:form id="for_t_r" style="font-size: large">
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                                             ui-grid-col-2,ui-grid-col-3" >
+                                    <p:outputLabel value="Honorarium"/>
+                                    <p:outputLabel value="#{csContractMB.item.conHonorarium} YER" style="width: 100%"/>
+                                    <p:outputLabel value="lumb sum"/>
+                                    <p:outputLabel value="#{csContractMB.workingDays} #{(csContractMB.workingDays>1)?'Days':'Day'}"/>
+                                    <p:outputLabel value="#{csContractMB.workingDays*csContractMB.item.conHonorarium} YER"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                                             ui-grid-col-2,ui-grid-col-3" >
+                                    <p:outputLabel value="Per-diem"/>
+                                    <p:outputLabel value="#{csContractMB.item.conPerdiemAverage} YER" style="width: 100%"/>
+                                    <p:outputLabel value="x up to"/>
+                                    <p:outputLabel value="#{csContractMB.paDayTotal}  #{(csContractMB.paDayTotal>1)?'Days':'Day'}"/>
+                                    <p:outputLabel style="font-size: large" value="#{csContractMB.paDPerdiemTotal} YER"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                                             ui-grid-col-2,ui-grid-col-3" >
+                                    <p:outputLabel value="Accommodation"/>
+                                    <p:outputLabel value="#{csContractMB.paAcco} YER" style="width: 100%"/>
+                                    <p:outputLabel value="x up to"/>
+                                    <p:outputLabel value="#{csContractMB.paAccoDayTotal}  #{(csContractMB.paAccoDayTotal>1)?'Days':'Day'}"/>
+                                    <p:outputLabel style="font-size: large" value="#{csContractMB.paAccoTotal} YER"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                                             ui-grid-col-2,ui-grid-col-3" >
+                                    <p:outputLabel value="Transportation"/>
+                                    <p:outputLabel value="#{csContractMB.paTranTotalTotal} YER" style="width: 100%"/>
+                                    <p:outputLabel value=""/>
+                                    <p:outputLabel value="lumb sum"/>
+                                    <p:outputLabel style="font-size: large" value="#{csContractMB.paTranTotalTotal} YER"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="5" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                                             ui-grid-col-2,ui-grid-col-3" >
+                                    <p:outputLabel value="Other Expenses"/>
+                                    <p:outputLabel value="#{csContractMB.item.conOtherExpenses} YER" style="width: 100%"/>
+                                    <p:outputLabel value=""/>
+                                    <p:outputLabel value="lumb sum"/>
+                                    <p:outputLabel style="font-size: large" value="#{csContractMB.item.conOtherExpenses} YER"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="3" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3" >
+                                    <p:outputLabel value="Total Remuneration"/>
+                                    <p:outputLabel style="font-size: large" value="#{csContractMB.conTotalInWords} YER"/>
+                                    <p:outputLabel value="#{csContractMB.conTotalInNumbers} YER" style="width: 100%"/>
+                                </p:panelGrid>
+
+
+
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Payments" id="ddddd">
+                            <h:form id="for_payments">
+
+                                <h:panelGrid id="payPG" columns="6" style="margin-bottom:10px">
+                                    <p:outputLabel value="1. "/>
+                                    <p:selectBooleanCheckbox disabled="#{!csContractMB.item.conPayment4Invoice or csContractMB.item.conPayment2Invoice}"  value="#{csContractMB.item.conPayment1Invoice}" label="First Payment">
+                                        <p:ajax update="for_payments" listener="#{csContractMB.doPayment}" />
+                                    </p:selectBooleanCheckbox>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment4Invoice or csContractMB.item.conPayment2Invoice}" value="#{csContractMB.item.conPayment1}"/>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment1Invoice}" value="#{csContractMB.item.con_payment1_p}">
+                                        <p:ajax event="keyup" update="for_payments" listener="#{csContractMB.doPayment2}"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment1Invoice}"/>
+                                    <p:outputLabel value="Date: " rendered="#{csContractMB.item.conPayment1Invoice}"/>
+                                    <p:calendar label="Date1" required="true" value="#{csContractMB.item.conPayment1Date}" rendered="#{csContractMB.item.conPayment1Invoice}"/>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment1Invoice}"/>
+                                    <p:outputLabel value="2. "/>
+                                    <p:selectBooleanCheckbox disabled="#{!csContractMB.item.conPayment1Invoice or csContractMB.item.conPayment3Invoice}" value="#{csContractMB.item.conPayment2Invoice}" label="Second Payment">
+                                        <p:ajax update="for_payments" listener="#{csContractMB.doPayment}" />
+                                    </p:selectBooleanCheckbox>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment1Invoice or csContractMB.item.conPayment3Invoice}" value="#{csContractMB.item.conPayment2}"/>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment2Invoice}" value="#{csContractMB.item.con_payment2_p}">
+                                        <p:ajax event="keyup" update="for_payments" listener="#{csContractMB.doPayment2}"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment2Invoice}"/>
+                                    <p:outputLabel value="Date: " rendered="#{csContractMB.item.conPayment2Invoice}"/>
+                                    <p:calendar label="Date2" required="true" value="#{csContractMB.item.conPayment2Date}" rendered="#{csContractMB.item.conPayment2Invoice}"/>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment2Invoice}"/>
+                                    <p:outputLabel value="3. "/>
+                                    <p:selectBooleanCheckbox disabled="#{!csContractMB.item.conPayment2Invoice}" value="#{csContractMB.item.conPayment3Invoice}" label="Third Payment">
+                                        <p:ajax update="for_payments" listener="#{csContractMB.doPayment}" />
+                                    </p:selectBooleanCheckbox>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment2Invoice}" value="#{csContractMB.item.conPayment3}"/>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment3Invoice}" value="#{csContractMB.item.con_payment3_p}">
+                                        <p:ajax event="keyup" update="for_payments" listener="#{csContractMB.doPayment2}"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment3Invoice}"/>
+                                    <p:outputLabel value="Date: " rendered="#{csContractMB.item.conPayment3Invoice}"/>
+                                    <p:calendar label="Date3" required="true" value="#{csContractMB.item.conPayment3Date}" rendered="#{csContractMB.item.conPayment3Invoice}"/>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment3Invoice}"/>
+                                    <p:outputLabel value="4. "/>
+                                    <p:selectBooleanCheckbox disabled="#{csContractMB.item.conPayment1Invoice or !csContractMB.item.conIsPayment}" value="#{csContractMB.item.conPayment4Invoice}" label="Final Payment">
+                                        <p:ajax update="for_payments" listener="#{csContractMB.doPayment}" />
+                                    </p:selectBooleanCheckbox>
+                                    <p:inputText disabled="#{csContractMB.item.conPayment1Invoice or !csContractMB.item.conIsPayment}" value="#{csContractMB.item.conPayment4}"/>
+                                    <p:inputText disabled="#{!csContractMB.item.conPayment4Invoice}" value="#{csContractMB.item.con_payment4_p}">
+                                        <p:ajax event="keyup" update="for_payments" listener="#{csContractMB.doPayment2}"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment4Invoice}"/>
+                                    <p:outputLabel value="Date: " rendered="#{csContractMB.item.conPayment4Invoice}"/>
+                                    <p:calendar label="Date4" required="true" value="#{csContractMB.item.conPayment4Date}" rendered="#{csContractMB.item.conPayment4Invoice}"/>
+                                    <p:outputLabel value="" rendered="#{!csContractMB.item.conPayment4Invoice}"/>
+                                </h:panelGrid>
+                                <p:commandButton rendered="#{!csContractMB.item.conIsPayment}" actionListener="#{csContractMB.startPayement()}"  value="Add Payment" update="for_payments" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                                <p:commandButton rendered="#{csContractMB.item.conIsPayment}" action="#{csContractMB.savePayement()}"  value="Save" styleClass="amber-btn" style="margin-bottom:10px;"/>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="SPL">
+                            <h:form id="for_spl">
+                                <a target="_blank"  href="#{helperMB.SPL}"> Go To Check </a>
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="#{(sessionMB.conSPL eq null)?'Add':'Update'}"/>
+                                        <p:selectBooleanCheckbox title="Add" value="#{csContractMB.showSPLUpload}" label="#{(sessionMB.conSPL eq null)?'Add':'Update'}" >
+                                            <p:ajax update="for_spl" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:fileUpload id="spl_select" label="SPL" rendered="#{csContractMB.showSPLUpload}"
+                                                  value="#{csContractMB.fileSPL}" mode="advanced" sizeLimit="5242880" 
+                                                  fileUploadListener="#{csContractMB.fileUploadListenerSPL}" >
+                                    </p:fileUpload>
+                                    <p:outputLabel value="NO SPL" rendered="#{sessionMB.conSPL eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conSPL eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show SPL"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showSPL}" label="Show SPL" >
+                                            <p:ajax update="for_spl" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="splMedia" value="#{sessionMB.conSPL}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showSPL}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Doc of contract awards">
+                            <h:form id="for_docq">
+                                <p:panelGrid columns="1" layout="grid" >
+                                    <p:outputLabel value="Information on Offers"/>
+                                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-11,ui-grid-col-1">
+                                        <p:inputTextarea placeholder="1." rows="1" value="#{csContractMB.item.dca_io1}" style="width: 100%"/>
+                                        <p:triStateCheckbox value="#{csContractMB.item.dca_io1_status}"/> 
+                                        <p:inputTextarea placeholder="2." rows="1" value="#{csContractMB.item.dca_io2}" style="width: 100%"/>
+                                        <p:triStateCheckbox value="#{csContractMB.item.dca_io2_status}"/>  
+                                        <p:inputTextarea placeholder="3." rows="1" value="#{csContractMB.item.dca_io3}" style="width: 100%"/>
+                                        <p:triStateCheckbox value="#{csContractMB.item.dca_io3_status}"/>  
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-11">
+                                        <p:selectBooleanCheckbox value="#{csContractMB.item.dca_case}">
+                                            <p:ajax update="for_docq" />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="please check if is case 2.1 or relase the check if case 2.2" />
+                                    </p:panelGrid>
+                                    <p:panelGrid rendered="#{csContractMB.item.dca_case eq null or !csContractMB.item.dca_case}" columns="1" layout="grid" >
+                                        <p:inputTextarea placeholder="The contract was awarded to" value="#{csContractMB.item.dca_case1_to}" style="width: 100%"/>
+                                        <p:inputTextarea placeholder="Reasons" value="#{csContractMB.item.dca_case1_desc}" style="width: 100%"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid rendered="#{csContractMB.item.dca_case}" columns="2" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-11">
+                                        <p:selectBooleanCheckbox value="#{csContractMB.item.dca_case2_1}"/>
+                                        <p:outputLabel value="Special experience through previous performance in project."/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.item.dca_case2_2}"/>
+                                        <p:outputLabel value="Follow up assignment with content link with previous assignment."/>                                        
+                                        <p:selectBooleanCheckbox value="#{csContractMB.item.dca_case2_3}"/>
+                                        <p:outputLabel value="Special technical qualifications or country specific experience."/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.item.dca_case2_4}"/>
+                                        <p:outputLabel value="Special urgency and availability."/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.item.dca_case2_5}"/>
+                                        <p:outputLabel value="Economically advantageous opportunity."/>
+                                        <p:outputLabel value=""/>
+                                        <p:inputTextarea placeholder="Further justification" style="width: 100%"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="7" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-1,ui-grid-col-3,ui-grid-col-2,ui-grid-col-2,ui-grid-col-1">
+                                        <p:outputLabel value="Date"/>
+                                        <p:calendar label="Date" required="true" value="#{csContractMB.item.dcaDate}"/>
+                                        <p:outputLabel value="Issued By"/>
+                                        <p:selectOneMenu label="Issued By" required="true" value="#{csContractMB.item.dca_by1}" converter="omnifaces.SelectItemsConverter">
+                                            <f:selectItem itemLabel="Select" noSelectionOption="true"/>
+                                            <f:selectItems value="#{csContractMB.csEmployees}" var="item1" itemLabel="#{item1.empName}" itemValue="#{item1}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Responsible Person"/>
+                                        <p:selectOneMenu label="Responsible Person" required="true" value="#{csContractMB.item.dca_by2}" converter="omnifaces.SelectItemsConverter">
+                                            <p:ajax event="change" listener="#{csContractMB.ProjectNoListner}" />
+                                            <f:selectItem itemLabel="Select" noSelectionOption="true"/>
+                                            <f:selectItems value="#{csContractMB.csEmployees}" var="item2" itemLabel="#{item2.empName}" itemValue="#{item2}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton action="#{csContractMB.savecon()}" styleClass="amber-btn" value="Save"/>
+                                    </p:panelGrid>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Sata Sheet">
+                            <h:form id="for_data_sheet">
+
+                                <h:panelGrid columns="2" style="margin-bottom:10px">
+
+                                </h:panelGrid>
+
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Check List">
+                            <h:form id="for_check_list">
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:commandLink value="#{(sessionMB.conCL eq null)?'Generate PDF':'Update PDF'}" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate12(1)}" />
+                                        <p:commandLink value="Generate Docx" ajax="false" target="_blank"
+                                                       actionListener="#{csContractMB.generate12(2)}" />
+
+                                    </p:panelGrid>
+
+
+                                    <p:outputLabel value="NO Check List" rendered="#{sessionMB.conCL eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conCL eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show Check List"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showCL}" label="Show SPL" >
+                                            <p:ajax update="for_check_list" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="wpMedia" value="#{sessionMB.conCL}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showCL}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Offer">
+                            <h:form id="for_offer">
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="#{(sessionMB.conOffer eq null)?'Add':'Update'}"/>
+                                        <p:selectBooleanCheckbox title="Add" value="#{csContractMB.showOfferUpload}" label="#{(sessionMB.conOffer eq null)?'Add':'Update'}" >
+                                            <p:ajax update="for_offer" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:fileUpload id="spl_select" label="Offer" rendered="#{csContractMB.showOfferUpload}"
+                                                  value="#{csContractMB.fileOffer}" mode="advanced" sizeLimit="5242880" 
+                                                  fileUploadListener="#{csContractMB.fileUploadListenerOffer}" >
+                                    </p:fileUpload>
+                                    <p:outputLabel value="NO Offer" rendered="#{sessionMB.conOffer eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conOffer eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show Offer"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showOffer}" label="Show Offer" >
+                                            <p:ajax update="for_offer" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="splMedia" value="#{sessionMB.conOffer}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showOffer}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="CV - ID">
+                            <h:form id="for_CV">
+
+
+
+                                <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-6,ui-grid-col-6">
+                                    <p:panelGrid columns="3" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
+                                        <p:button rendered="#{sessionMB.CV eq null}" value="Go To Import CV To Contractor" icon="fa fa-edit"  outcome="/contractor/update" >
+                                            <f:param name="id" value="#{csContractMB.csTor.torconrID.conrID}"/>
+                                        </p:button>
+                                        <p:commandButton value="#{(sessionMB.conVC eq null)?'CV - Generate':'CV - Update'}" action="#{csContractMB.generateCV()}"/>
+                                        <p:outputLabel value="NO CV" rendered="#{sessionMB.conVC eq null}"/>
+                                        <p:outputLabel value="Show CV" rendered="#{!(sessionMB.conVC eq null)}"/>
+                                        <p:selectBooleanCheckbox rendered="#{!(sessionMB.conVC eq null)}" value="#{csContractMB.showCV}" label="Show CV" >
+                                            <p:ajax update="for_CV" listener="#{sessionMB.checkBoxListner(csContractMB.showCV)}"/>
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="3" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
+                                        <p:button rendered="#{sessionMB.ID eq null}" value="Go To Import ID To Contractor" icon="fa fa-edit"  outcome="/contractor/update" >
+                                            <f:param name="id" value="#{csContractMB.csTor.torconrID.conrID}"/>
+                                        </p:button>
+                                        <p:commandButton value="#{(sessionMB.conID eq null)?'ID - Generate':'ID - Update'}" action="#{csContractMB.generateID()}"/>
+                                        <p:outputLabel value="NO ID" rendered="#{sessionMB.conID eq null}"/>
+                                        <p:outputLabel value="Show ID" rendered="#{!(sessionMB.conID eq null)}"/>
+                                        <p:selectBooleanCheckbox rendered="#{!(sessionMB.conID eq null)}" value="#{csContractMB.showID}" label="Show ID" >
+                                            <p:ajax update="for_CV" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+                                    <p:media id="ert" cache="false" value="#{sessionMB.conVC}" width="100%" height="500" player="pdf" rendered="#{csContractMB.showCV}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                    <p:media cache="false" value="#{sessionMB.conID}" width="100%" height="500" player="pdf" rendered="#{csContractMB.showID}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Exchange Rate">
+                            <h:form id="for_er">
+                                <a target="_blank"  href="#{helperMB.ER}"> Go To Check </a>
+                                <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid">
+                                    <p:panelGrid columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="#{(sessionMB.conExchangeReate eq null)?'Add':'Update'}"/>
+                                        <p:selectBooleanCheckbox title="Add" value="#{csContractMB.showExchangeRateUpload}" label="#{(sessionMB.conExchangeReate eq null)?'Add':'Update'}" >
+                                            <p:ajax update="for_er" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:fileUpload id="spl_select" label="Exchange Rate" rendered="#{csContractMB.showExchangeRateUpload}"
+                                                  value="#{csContractMB.fileExchangeRate}" mode="advanced" sizeLimit="5242880" 
+                                                  fileUploadListener="#{csContractMB.fileUploadListenerExchangeRate}" >
+                                    </p:fileUpload>
+                                    <p:outputLabel value="NO Exchange Rate" rendered="#{sessionMB.conExchangeReate eq null}"/>
+                                    <p:panelGrid rendered="#{!(sessionMB.conExchangeReate eq null)}" columns="2" style="margin-bottom:10px" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-8">
+                                        <p:outputLabel value="Show Exchange Rate"/>
+                                        <p:selectBooleanCheckbox value="#{csContractMB.showExchangeRate}" label="Show ExchangeRate" >
+                                            <p:ajax update="for_er" />
+                                        </p:selectBooleanCheckbox>
+                                    </p:panelGrid>
+
+                                    <p:media cache="false" id="splMedia" value="#{sessionMB.conExchangeReate}" width="100%" height="500" player="pdf" 
+                                             rendered="#{csContractMB.showExchangeRate}"> 
+                                        <f:param name="id" value="#{utilMB.idFile}"/>
+                                    </p:media>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                    </p:tabView>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+

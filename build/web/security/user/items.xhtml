@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="head">
+        <!--head-->
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <!--<p:link outcome="create" rendered="#{session.getAttribute('user.add') eq true}" style="text-decoration: none" class="fa fa-plus"/>-->
+            <p:link outcome="create"  style="text-decoration: none" class="fa fa-plus"/>
+            <p:separator/>
+            <div class="ui-g" >
+                <f:event type="preRenderComponent" listener="#{securityUserMB.prepareItems()}"/>      
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <!--<h1></h1>-->
+                        <p:dataTable var="item" value="#{securityUserMB.items}"  reflow="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,20,40,100"
+                                     resizableColumns="true">
+
+                            <p:column  headerText="name" filterBy="#{item.name}" style="text-align: center">
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>                
+                            <p:column  headerText="createTime" filterBy="#{item.createTime}" style="text-align: center">
+                                <h:outputText value="#{item.createTime}"/>
+                            </p:column>                
+                            <p:column  headerText="createUser" filterBy="#{item.createUser.userName}" style="text-align: center">
+                                <h:outputText value="#{item.createUser.userName}"/>
+                            </p:column>                
+                            <p:column  headerText="officialEmail" filterBy="#{item.officialEmail}" style="text-align: center">
+                                <h:outputText value="#{item.officialEmail}"/>
+                            </p:column>                
+
+
+                            <p:column style="width: 30px">
+                                <p:button   title="update" icon="fa fa-edit"  outcome="update">
+                                    <f:param name="id" value="#{item.id}"/>
+                                </p:button>
+                            </p:column>
+<!--                            <p:column rendered="#{session.getAttribute('user.update') eq true}" style="width: 30px">
+                                <p:button   title="update" icon="fa fa-edit"  outcome="update">
+                                    <f:param name="id" value="#{item.id}"/>
+                                </p:button>
+                            </p:column>-->
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

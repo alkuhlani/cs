@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <f:event type="preRenderComponent" listener="#{csContractorMB.prepareItems()}"/>      
+        <h:form id="form">
+            <div class="ui-g">  
+                <div class="ui-g-12">
+                    <p:breadCrumb>
+                        <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                        <p:menuitem value="Contractor" url="/contractor/items.xhtml" />
+                        <p:menuitem value="New" url="/contractor/create.xhtml" />
+                    </p:breadCrumb>
+                    <div class="card">
+
+                        <p:dataGrid var="item" value="#{csContractorMB.items}" columns="2" layout="grid"
+                                    rows="6" paginator="true" id="cars"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="3,6,9,12,16">
+                            <p:panel header="#{item.conrID}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:outputText value="#{item.conrTitle}" styleClass="Fs14 FontDosisMedium"/>
+                                    <h:outputText value="#{item.conrName1} #{item.conrName2}" styleClass="Fs14 FontDosisMedium"/>
+                                    <h:outputText value="#{item.conrmobileNo}" styleClass="Fs14 FontDosisMedium"/>
+                                    <h:outputText value="#{item.conrEmail}" styleClass="Fs14 FontDosisMedium"/>
+                                    <h:outputText value="..." styleClass="Fs14 FontDosisMedium"/>
+                                    <p:button icon="fa fa-edit"  outcome="update" >
+                                        <f:param name="id" value="#{item.conrID}"/>
+                                    </p:button>
+
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dataGrid>
+
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

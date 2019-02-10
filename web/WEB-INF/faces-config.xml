@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>primefaces_barcelona</name>
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>ar</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>i18n/msg</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        <action-listener>
+            org.primefaces.application.DialogActionListener
+        </action-listener>
+        <navigation-handler>
+            org.primefaces.application.DialogNavigationHandler
+        </navigation-handler>
+        <view-handler>
+            org.primefaces.application.DialogViewHandler
+        </view-handler>
+    
+    </application>
+    
+    <component>
+        <component-type>org.primefaces.component.BarcelonaMenu</component-type>
+        <component-class>org.primefaces.barcelona.component.Menu</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.primefaces.component.BarcelonaTabMenu</component-type>
+        <component-class>org.primefaces.barcelona.component.TabMenu</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.primefaces.component.BarcelonaTab</component-type>
+        <component-class>org.primefaces.barcelona.component.Tab</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BarcelonaMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.barcelona.component.MenuRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.BarcelonaTabMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.barcelona.component.TabMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    
+</faces-config>

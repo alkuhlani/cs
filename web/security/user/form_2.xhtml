@@ -1,0 +1,55 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              >
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-selectoneradio.ui-grid-responsive .ui-grid-col-4,
+            .ui-selectmanycheckbox.ui-grid-responsive .ui-grid-col-4{
+                padding-bottom: 10px;
+            }
+            .ui-grid-col-4{
+                text-align: right
+            }
+            .ui-grid-col-6{
+                text-align: right
+            }
+            .ui-grid-col-2{
+                text-align: left
+            }
+            
+        </style>
+    </ui:define>
+
+    <div class="ui-g " >
+        <div class="ui-g-12">
+            <div class="card card-w-title" >
+                <p:panelGrid styleClass="nba-grid"  class="ui-g-12" >
+                    <p:row style="width: 100%" styleClass="ui-widget-header">
+                        <p:column  styleClass="ui-widget-header" style="text-align: left" >
+                            <h:link title="back" outcome="items" value="" style="text-align: left">
+                                <i class="fa fa-reply" style="size: 20px;color: #ffffff;font-size:larger ;float: left;padding-right: 5px;" />
+                            </h:link> 
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:messages showDetail="true" autoUpdate="true" closable="true" />
+                <p:focus context="panel"/>
+                <p:panelGrid id="panel" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" 
+                             layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                             style="border:0px none; background-color:transparent" >
+                    <p:outputLabel value="arabic name"/>
+                    <p:inputText  placeholder="username" value="#{securityUserMB.item.name}" style="width: 100%;text-align: center"/>
+                    <p:outputLabel  value="arabic name"/>
+                    <p:inputText placeholder="username"  value="#{securityUserMB.item.userName}" style="width: 100%;text-align: center"/>
+                    <p:outputLabel  value="arabic name"/>
+                    <p:inputText  placeholder="Password" value="#{securityUserMB.item.password}" style="width: 100%;text-align: center"/>
+                    
+                </p:panelGrid>
+            </div>
+        </div>
+    </div>
+</ui:component>

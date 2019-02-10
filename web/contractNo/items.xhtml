@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <h:form>
+        <h:form id="form">
+            <f:event type="preRenderComponent" listener="#{csSystemMB.prepareUpdate()}"/>
+            <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+            <div class="ui-g">  
+                <div class="ui-g-12">
+                    <p:breadCrumb>
+                        <p:menuitem value="Categories" url="/dashboard.xhtml" />
+                        <p:menuitem value="Contract No" url="/contractNo/items.xhtml" />
+                    </p:breadCrumb>
+                    <div class="card">
+                        <p:panelGrid id="panel" columns="5" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" 
+                                     layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                                     style="border:0px none; background-color:transparent" >
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText label="first" required="true" value="#{csSystemMB.item.sys1conNo}" style="text-align: center"/>
+                                <label>first</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText label="middle" required="true" value="#{csSystemMB.item.sys2conNo}" style="text-align: center"/>
+                                <label>middle</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText label="last" required="true" value="#{csSystemMB.item.sys3conNo}" style="text-align: center"/>
+                                <label>last</label>
+                            </h:panelGroup>
+                            <p:panelGrid id="panel2" columns="1" >
+                                <p:outputLabel value="Is New"/>
+                                <p:selectOneRadio label="Is New" required="true" value="#{csSystemMB.item.sysconNoIsNew}">
+                                    <f:selectItem itemLabel="YES" itemValue="true"/>
+                                    <f:selectItem itemLabel="NO" itemValue="false"/>
+                                </p:selectOneRadio>
+                            </p:panelGrid>
+
+                            <p:panelGrid id="panel3" columns="1" >
+                                <p:outputLabel value="Is Active"/>
+                                <p:selectOneRadio label="Is Active" required="true" value="#{csSystemMB.item.sysconNoIsActive}">
+                                    <f:selectItem itemLabel="YES" itemValue="true"/>
+                                    <f:selectItem itemLabel="NO" itemValue="false"/>
+                                </p:selectOneRadio>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+                        <p:panelGrid  columns="5" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" 
+                                     layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                                     style="border:0px none; background-color:transparent" >
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{csSystemMB.item.sys11conNo}" style="text-align: center"/>
+                                <label>first-last</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <div style="text-align: center">
+                            <p:commandButton value="update" action="#{csSystemMB.update()}">
+                                <p:confirm header="confirme" message="do you want" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                        </div>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+            </h:form>   
+    </ui:define>
+</ui:composition>
+
